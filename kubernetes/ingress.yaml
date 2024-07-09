@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: audio-sync-ingress
+spec:
+  rules:
+  - host: yourdomain.com
+    http:
+      paths:
+      - path: /client
+        pathType: Prefix
+        backend:
+          service:
+            name: client-service
+            port:
+              number: 5000
+      - path: /edge
+        pathType: Prefix
+        backend:
+          service:
+            name: edge-server-service
+            port:
+              number: 5000
+      - path: /central
+        pathType: Prefix
+        backend:
+          service:
+            name: central-server-service
+            port:
+              number: 5000
