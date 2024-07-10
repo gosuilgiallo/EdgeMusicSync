@@ -1,83 +1,82 @@
-Edge Computing Music Synchronization
+# Edge Computing Music Synchronization
 
-This project implements an edge computing solution for real-time audio synchronization between two clients using edge servers and a central server.
-Folder Structure
+This project implements an edge computing solution for real-time audio synchronization between two clients using edge servers and a central server. 
 
-    client/ - Contains the source code and Dockerfile for the client.
-    edgeserver/ - Contains the source code and Dockerfile for the edge server.
-    centralserver/ - Contains the source code and Dockerfile for the central server.
-    kubernetes/ - Contains YAML files for deployment on Kubernetes.
+## Folder Structure
 
-Configuration and Execution
-Prerequisites
+- client/ - Contains the source code and Dockerfile for the client.
+- edgeserver/ - Contains the source code and Dockerfile for the edge server.
+- centralserver/ - Contains the source code and Dockerfile for the central server.
+- kubernetes/ - Contains YAML files for deployment on Kubernetes.
 
-    Docker
-    Kubernetes
-    kubectl configured for your Kubernetes cluster
+## Configuration and Execution Prerequisites
 
-Building Docker Images
+- Docker
+- Kubernetes
+- kubectl configured for your Kubernetes cluster
 
-    Client:
-    Bash
+## Building Docker Images
 
-        cd client
-        docker build -t your-docker-repo/client:latest .
+Client:
+```Bash
 
-
-    Edge Server:
-    Bash
-
-        cd ../edgeserver
-        docker build -t your-docker-repo/edgeserver:latest .
+    cd client
+    docker build -t your-docker-repo/client:latest .
+```
 
 
-    Central Server:
-    Bash
+Edge Server:
+```Bash
 
-        cd ../centralserver
-        docker build -t your-docker-repo/centralserver:latest .
+    cd ../edgeserver
+    docker build -t your-docker-repo/edgeserver:latest .
+```
 
+Central Server:
+```Bash
 
-Deployment on Kubernetes
+    cd ../centralserver
+    docker build -t your-docker-repo/centralserver:latest .
+```
 
-    Deploy Client:
-    Bash
+## Deployment on Kubernetes
 
-    kubectl apply -f kubernetes/client-deployment.yaml
-    kubectl apply -f kubernetes/client-service.yaml
+Deploy Client:
+```Bash
 
+kubectl apply -f kubernetes/client-deployment.yaml
+kubectl apply -f kubernetes/client-service.yaml
+```
 
-    Deploy Edge Server:
-    Bash
+Deploy Edge Server:
+```Bash
 
-    kubectl apply -f kubernetes/edge-server-deployment.yaml
-    kubectl apply -f kubernetes/edge-server-service.yaml
+kubectl apply -f kubernetes/edge-server-deployment.yaml
+kubectl apply -f kubernetes/edge-server-service.yaml
+```
 
+Deploy Central Server:
+```Bash
 
-    Deploy Central Server:
-    Bash
+kubectl apply -f kubernetes/central-server-deployment.yaml
+kubectl apply -f kubernetes/central-server-service.yaml
+```
 
-    kubectl apply -f kubernetes/central-server-deployment.yaml
-    kubectl apply -f kubernetes/central-server-service.yaml
+Deploy Ingress:
+```Bash
 
+kubectl apply -f kubernetes/ingress.yaml
+```
 
-    Deploy Ingress:
-    Bash
+## Apply Network Policies:
+```Bash
 
-    kubectl apply -f kubernetes/ingress.yaml
+kubectl apply -f kubernetes/network-policies.yaml
+```
+## Description of Configuration Files
 
-    Use code with caution.
-
-Apply Network Policies:
-Bash
-
-   kubectl apply -f kubernetes/network-policies.yaml
-
-
-Description of Configuration Files
-
-    Client Deployment YAML: The client-deployment.yaml file defines a deployment for the client, creating two replicas of the client. Each pod listens on port 5000.
-    Edge Server Deployment YAML: The edge-server-deployment.yaml file defines a deployment for the edge server, creating two replicas of the edge server. Each pod listens on port 5000.
-    Central Server Deployment YAML: The central-server-deployment.yaml file defines a deployment for the central server, creating a single replica of the central server. The pod listens on port 5000.
-    Ingress YAML: The ingress.yaml file defines the ingress rules for the client, edge server, and central server services, allowing access through a specific domain.
-    Network Policies YAML: The network-policies.yaml file defines the network policies to allow traffic between clients and edge servers, and between edge servers and the central server.
+- Client Deployment YAML: The client-deployment.yaml file defines a deployment for the client, creating two replicas of the client. Each pod listens on port 5000.
+- Edge Server Deployment YAML: The edge-server-deployment.yaml file defines a deployment for the edge server, creating two replicas of the edge server. Each pod listens on port 5000.
+- Central Server Deployment YAML: The central-server-deployment.yaml file defines a deployment for the central server, creating a single replica of the central server. The pod listens on port 5000.
+- Ingress YAML: The ingress.yaml file defines the ingress rules for the client, edge server, and central server services, allowing access through a specific domain.
+- Network Policies YAML: The network-policies.yaml file defines the network policies to allow traffic between clients and edge servers, and between edge servers and the central server.
