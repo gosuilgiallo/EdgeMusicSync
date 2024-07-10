@@ -28,18 +28,38 @@ public class EdgeServer {
              InputStream centralIn = centralSocket.getInputStream();
              OutputStream clientOut = clientSocket.getOutputStream()) {
 
-            byte[] buffer = new byte[BUFFER_SIZE];
-            int bytesRead;
-
-            // Invia l'audio ricevuto dal client al server centrale
-            while ((bytesRead = clientIn.read(buffer)) != -1) {
-                centralOut.write(buffer, 0, bytesRead);
+            // Thread 1: Client to Central Data Transfer
+        Thread clientToCentralThread = new Thread(() -> {
+            try () { 
+                byte[] buffer = new byte[4096]; // Buffer size 
+                int bytesRead;
+                while ((bytesRead = clientIn.read(buffer)) != -1) {
+                    centralOut.write(buffer, 0, bytesRead);
+                }
+            } catch (IOException e) {
+                // Handle exceptions gracefully
+                e.printStackTrace();
             }
+        });
 
-            // Riceve l'audio mixato dal server centrale e lo inoltra al client
-            while ((bytesRead = centralIn.read(buffer)) != -1) {
-                clientOut.write(buffer, 0, bytesRead);
+        // Thread 2: Central to Client Data Transfer
+        Thread centralToClientThread = new Thread(() -> {
+            try () {
+                byte[] buffer = new byte[4096]; // Buffer size 
+                int bytesRead;
+                while ((bytesRead = centralIn.read(buffer)) != -1) {
+                    clientOut.write(buffer, 0, bytesRead);
+                }
+            } catch (IOException e) {
+                // Handle exceptions gracefully
+                e.printStackTrace();
             }
+        });
+
+        // Start both threads to run in parallel
+        clientToCentralThread.start();
+        centralToClientThread.start();
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
